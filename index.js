@@ -63,13 +63,22 @@ var WriteToFilePlugin = (function () {
 
       compiler.hooks.done.tap('Write To File Plugin', function() {
          var data = options.data;
-         var dir = path.dirname(options.filename);
-         var optionsForWriteFile = {};
-        
-         if (!fs.existsSync(dir)) {
-             mkdir(dir);
+         
+         // Prevent accidentally overriding an existed file, which may be important.
+         var override = (options.override === undefined || options.override) ? true : false;
+         if (!override && fs.existsSync(options.filename)) {
+            console.warn('The override option is set to flase, no data written to the file!');
+            return;
          }
-        
+         
+         // Create the directory recursively if it not exists yet.
+         var dir = path.dirname(options.filename);
+         if (!fs.existsSync(dir)) {
+            mkdir(dir);
+         }
+
+         // Collect the options for underlying `writeFileSync`.
+         var optionsForWriteFile = {};
          optionsForWriteFile.encoding = options.encoding || 'utf8';
          optionsForWriteFile.mode = options.mode || 0o666;
          optionsForWriteFile.flag = options.flag || 'w';

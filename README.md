@@ -48,6 +48,8 @@ module.exports = {
 # List of options:
 - filename
 - data
+- override          
+`<boolean> Default: true`, if set to false, no data will be written to an exsited file 
 - encoding     
 `<string> | <null> Default: 'utf8'`
 - mode       
