@@ -19,6 +19,21 @@ The data to be written can be either a simple javascript variable, or a function
 const WriteToFilePlugin = require('write-to-file-webpack');
 
 module.exports = {
+  ...
+  plugins: [
+     new WriteToFilePlugin({ 
+        filename: 'path/to/write/file', 
+        data: 'console.log("write to file")'
+      })
+  ]
+  ...
+}
+```
+
+```javascript
+const WriteToFilePlugin = require('write-to-file-webpack');
+
+module.exports = {
    ...
    plugins: [
       new WriteToFilePlugin({ 
@@ -32,21 +47,30 @@ module.exports = {
 }
 ```
 
+If the `data` is provided as a `function`, we can do more operations than just simply returning the data to be written. For example, if we wanna write to a file parts of an exsited file say `package.json`, and more specifically, removing the `dependencies` and `devDependencies` items, with `write-to-file-webpack` we can do this:
 
 ```javascript
 const WriteToFilePlugin = require('write-to-file-webpack');
+const config = require('./package.json');
 
 module.exports = {
-  ...
-  plugins: [
-     new WriteToFilePlugin({ 
-        filename: 'path/to/write/file', 
-        data: 'console.log("write to file")'
-      })
-  ]
-  ...
+   ...
+   plugins: [
+      new WriteToFilePlugin({ 
+         filename: 'path/to/write/package.json', 
+         data: function () {
+            return JSON.stringify({
+               ...config,
+               dependencies: undefined,
+               devDependencies: undefined,
+           });
+         }
+     })
+   ]
+   ...
 }
 ```
+Of course, if we want to copy the whole content of a existed file, there is webpack plugin called `copy-webpack-plugin`.
 
 # Support
 `node >= 6` and `webpack >= 4`
