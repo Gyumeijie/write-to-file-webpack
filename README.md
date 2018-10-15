@@ -3,6 +3,12 @@
 
 This is a simple webpack plugin for writing data to file.
 
+# Features
+1. support creating directory recursively
+2. support data of function type, which allows processing data in complex situation
+3. support native options of underlying writeFileSync
+4. support protection of an exsited file
+
 # Installation
 `npm install --save-dev write-to-file-webpack`
 
@@ -45,9 +51,9 @@ module.exports = {
 # Support
 `node >= 6` and `webpack >= 4`
 
-# List of options:
-- filename
-- data
+# Options
+- filename (**required**)
+- data (**required**)
 - override          
 `<boolean> Default: true`, if set to false, no data will be written to an exsited file 
 - encoding     
