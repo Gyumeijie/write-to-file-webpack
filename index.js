@@ -59,21 +59,23 @@ var WriteToFilePlugin = (function () {
    }
 
    WriteToFilePlugin.prototype.apply = function(compiler) {
-      var that = this;
+      var options = this.options;
 
       compiler.hooks.done.tap('Write To File Plugin', function() {
-         var data = that.options.data;
-         var dir = path.dirname(that.options.filename);
-
+         var data = options.data;
+         var dir = path.dirname(options.filename);
+         var optionsForWriteFile = {};
+        
          if (!fs.existsSync(dir)) {
              mkdir(dir);
          }
+        
+         optionsForWriteFile.encoding = options.encoding || 'utf8';
+         optionsForWriteFile.mode = options.mode || 0o666;
+         optionsForWriteFile.flag = options.flag || 'w';
 
-         if (typeof data === 'function') {
-            fs.writeFileSync(that.options.filename, data());
-         } else {
-            fs.writeFileSync(that.options.filename, data);
-         }
+         var dataToBeWritten = (typeof data === 'function') ? data() : data;
+         fs.writeFileSync(options.filename, dataToBeWritten, optionsForWriteFile);
       });
    }
 

@@ -48,3 +48,11 @@ module.exports = {
 # List of options:
 - filename
 - data
+- encoding     
+`<string> | <null> Default: 'utf8'`
+- mode       
+`<integer> Default: 0o666`
+- flag        
+`<string> Default: 'w'`
+
+For more information about `encoding`, `mode`, and `flag` please refer to [node writeFile](https://nodejs.org/docs/latest-v9.x/api/fs.html#fs_fs_writefilesync_file_data_options).
